@@ -1,0 +1,127 @@
+from tkinter import *
+import turtle
+
+def izracunaj_gustocu(masa, volumen, rezultat_labela):
+    try:
+        masa_vrijednost = float(masa.get())
+        volumen_vrijednost = float(volumen.get())
+        gustoca = masa_vrijednost / volumen_vrijednost
+        rezultat_labela.config(text=f"Gustoća: {gustoca:.2f} g/cm³")
+    except ValueError:
+        rezultat_labela.config(text="Unesite valjane brojeve za masu i volumen.")
+
+def izracunaj_maseni_udio(masa_supstance, ukupna_masa, rezultat_labela):
+    try:
+        masa_supstance_vrijednost = float(masa_supstance.get())
+        ukupna_masa_vrijednost = float(ukupna_masa.get())
+        maseni_udio = (masa_supstance_vrijednost / ukupna_masa_vrijednost) * 100
+        rezultat_labela.config(text=f"Maseni udio: {maseni_udio:.2f}%")
+    except ValueError:
+        rezultat_labela.config(text="Unesite valjane brojeve za masu supstance i ukupnu masu.")
+
+def nacrtaj_koordinatni_sustav(x, y):
+    try:
+        x_vrijednost = float(x.get())
+        y_vrijednost = float(y.get())
+
+        ekran = turtle.Screen()
+        ekran.setup(width=600, height=600)
+        ekran.bgcolor("white")
+
+        kornjaca = turtle.Turtle()
+        kornjaca.speed(0)
+        kornjaca.penup()
+        kornjaca.goto(-300, 0)
+        kornjaca.pendown()
+        kornjaca.goto(300, 0)
+        kornjaca.penup()
+        kornjaca.goto(0, -300)
+        kornjaca.pendown()
+        kornjaca.goto(0, 300)
+        kornjaca.penup()
+        kornjaca.goto(x_vrijednost, y_vrijednost)
+        kornjaca.dot(10, "red")
+
+        turtle.done()
+    except ValueError:
+        pass  # Zanemari nevaljane vrijednosti unosa
+
+def izracun_gustoce():
+    prozor = Toplevel()
+    prozor.title('Izračun gustoće')
+    prozor.geometry('400x200')
+    prozor.config(bg='pink')
+
+    masa_labela = Label(prozor, text='Unesite masu (g): ', bg='pink')
+    masa_labela.grid(row=0, column=0, padx=10, pady=10)
+    masa_unos = Entry(prozor)
+    masa_unos.grid(row=0, column=1, padx=10, pady=10)
+
+    volumen_labela = Label(prozor, text='Unesite volumen (cm³): ', bg='pink')
+    volumen_labela.grid(row=1, column=0, padx=10, pady=10)
+    volumen_unos = Entry(prozor)
+    volumen_unos.grid(row=1, column=1, padx=10, pady=10)
+
+    izracunaj_gustocu_gumb = Button(prozor, text='Izračunaj gustoću', command=lambda: izracunaj_gustocu(masa_unos, volumen_unos, rezultat_labela))
+    izracunaj_gustocu_gumb.grid(row=2, columnspan=2, pady=10)
+
+    rezultat_labela = Label(prozor, bg='pink')
+    rezultat_labela.grid(row=3, columnspan=2)
+
+def nacrtaj_koordinatni_sustav_prozor():
+    prozor = Toplevel()
+    prozor.title('Crtanje koordinatnog sustava')
+    prozor.geometry('400x200')
+    prozor.config(bg='light green')
+
+    x_labela = Label(prozor, text='Unesite vrijednost za X: ', bg='light green')
+    x_labela.grid(row=0, column=0, padx=10, pady=10)
+    x_unos = Entry(prozor)
+    x_unos.grid(row=0, column=1, padx=10, pady=10)
+
+    y_labela = Label(prozor, text='Unesite vrijednost za Y: ', bg='light green')
+    y_labela.grid(row=1, column=0, padx=10, pady=10)
+    y_unos = Entry(prozor)
+    y_unos.grid(row=1, column=1, padx=10, pady=10)
+
+    nacrtaj_gumb = Button(prozor, text='Nacrtaj', command=lambda: nacrtaj_koordinatni_sustav(x_unos, y_unos))
+    nacrtaj_gumb.grid(row=2, columnspan=2, pady=10)
+
+def izracun_masnog_udjela():
+    prozor = Toplevel()
+    prozor.title('Izračun masenog udjela')
+    prozor.geometry('400x200')
+    prozor.config(bg='light yellow')
+
+    masa_supstance_labela = Label(prozor, text='Unesite masu supstance (g): ', bg='light yellow')
+    masa_supstance_labela.grid(row=0, column=0, padx=10, pady=10)
+    masa_supstance_unos = Entry(prozor)
+    masa_supstance_unos.grid(row=0, column=1, padx=10, pady=10)
+
+    ukupna_masa_labela = Label(prozor, text='Unesite ukupnu masu (g): ', bg='light yellow')
+    ukupna_masa_labela.grid(row=1, column=0, padx=10, pady=10)
+    ukupna_masa_unos = Entry(prozor)
+    ukupna_masa_unos.grid(row=1, column=1, padx=10, pady=10)
+
+    izracunaj_gumb = Button(prozor, text='Izračunaj maseni udio', command=lambda: izracunaj_maseni_udio(masa_supstance_unos, ukupna_masa_unos, rezultat_labela))
+    izracunaj_gumb.grid(row=2, columnspan=2, pady=10)
+
+    rezultat_labela = Label(prozor, bg='light yellow')
+    rezultat_labela.grid(row=3, columnspan=2)
+
+prozor_glavni = Tk()
+prozor_glavni.geometry('600x400')
+prozor_glavni.config(bg='lightblue')
+prozor_glavni.title('Vježbamo zajedno - kemija')
+
+oznaka = Label(prozor_glavni, text='Odaberi zadatak koji želiš vježbati: ', bg='pink')
+oznaka.place(x=75, y=50, width=300)
+
+gumb1 = Button(prozor_glavni, text='IZRAČUN GUSTOĆE', command=izracun_gustoce)
+gumb1.place(x=75, y=100, width=300)
+gumb2 = Button(prozor_glavni, text='KOORDINATNI SUSTAV', command=nacrtaj_koordinatni_sustav_prozor)
+gumb2.place(x=75, y=150, width=300)
+gumb3 = Button(prozor_glavni, text='IZRAČUN MASENOG UDJELA', command=izracun_masnog_udjela)
+gumb3.place(x=75, y=200, width=300)
+
+prozor_glavni.mainloop()
